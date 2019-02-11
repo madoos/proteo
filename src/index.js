@@ -1,14 +1,26 @@
-const mockChain = ({ value, when, fieldStoreName = 'calls' }) => {
-    const _getters = [];
-    const _executions = {};
+const { assign } = Object;
+
+const getOptions = opt => {
+    const defaultOpt = {
+        value : x => x,
+        when  : () => false,
+        store : 'calls'
+    };
+    return assign(defaultOpt, opt);
+};
+
+const proteo = opt => {
+    const { when, value, store } = getOptions(opt);
+
+    let _getters = [];
+    let _executions = {};
 
     const _calls = {
-        _getters,
-        _calls : _executions,
-        clear  : () => {
-            _calls._getters = [];
-            _calls._calls = {};
-        }
+        clear : () => {
+            _getters = [];
+            _executions = {};
+        },
+        get : () => _executions
     };
 
     const storeCalls = (args, key) => {
@@ -35,7 +47,7 @@ const mockChain = ({ value, when, fieldStoreName = 'calls' }) => {
                         };
                     }
                     return result;
-                } else if (prop === fieldStoreName) {
+                } else if (prop === store) {
                     return _calls;
                 }
                 _getters.push(prop);
@@ -47,4 +59,4 @@ const mockChain = ({ value, when, fieldStoreName = 'calls' }) => {
     return proxy;
 };
 
-module.exports = mockChain;
+module.exports = proteo;

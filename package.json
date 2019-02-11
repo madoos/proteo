@@ -1,8 +1,8 @@
 {
-  "name": "chain-mock",
-  "version": "0.0.0",
-  "description": "",
-  "homepage": "https://github.com/madoos/chain-mock",
+  "name": "proteo",
+  "version": "1.0.0",
+  "description": "Create shapes and structures dynamically",
+  "homepage": "https://github.com/madoos/proteo",
   "contributors": [
     {
       "name": "Maurice Domínguez",
@@ -14,7 +14,8 @@
     }
   ],
   "files": [
-    "lib"
+    "src",
+    "index.js"
   ],
   "main": "./index.js",
   "keywords": [

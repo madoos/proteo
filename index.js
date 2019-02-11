@@ -1,2 +1,2 @@
-const chainMock = require('./src');
-module.exports = chainMock;
+const proteo = require('./src');
+module.exports = proteo;

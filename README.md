@@ -1,29 +1,81 @@
-# chain-mock [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> 
+# proteo
+
+>
+
+In Greek mythology, Proteo is a god of the sea that can take any form.
+
+The library allows to obtain metaprogrammed structures to easily imitate existing apis
 
 ## Installation
 
 ```sh
-$ npm install --save chain-mock
+$ npm install --save proteo
 ```
 
 ## Usage
 
 ```js
-const chainMock = require('chain-mock');
-
-chainMock('Rainbow');
+const proteo = require("proteo")
+const api = proteo()
+api.a.b().c.d()
 ```
+
+```javascript
+const rx = proteo({
+  when: prop => prop === "subscribe",
+  value: prop => next => next(6)
+})
+
+rx.Observable.from([1, 2])
+  .map(double)
+  .reduce(add)
+  .subscribe(n => console.log(n)) // 6
+
+console.log(rx.calls.get())
+/*
+
+{
+  map: [[double]],
+  reduce: [[add]]
+}
+
+*/
+```
+
+```javascript
+const res = proteo({
+  when: prop => prop === "send",
+  value: prop => data => data
+})
+
+res.status(200).send({ data: true })
+
+console.log(rx.calls.get())
+/*
+{
+  status: [[200]],
+  send: [[{ data: true }]]
+}
+*/
+```
+
+## Options
+
+```javascript
+
+const api = proteo({
+  when: (prop) => prop === "finish" // condition to stop chain
+  value: () => true // value returned
+  store: "customName" // name for store calls
+})
+
+api.a.b().c.finish // true
+api.customName.get() // get calla
+api.customName.clear() // clear calls
+
+
+```
+
 ## License
 
 MIT © [Maurice Domínguez]()
-
-
-[npm-image]: https://badge.fury.io/js/chain-mock.svg
-[npm-url]: https://npmjs.org/package/chain-mock
-[travis-image]: https://travis-ci.org/madoos/chain-mock.svg?branch=master
-[travis-url]: https://travis-ci.org/madoos/chain-mock
-[daviddm-image]: https://david-dm.org/madoos/chain-mock.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/madoos/chain-mock
-[coveralls-image]: https://coveralls.io/repos/madoos/chain-mock/badge.svg
-[coveralls-url]: https://coveralls.io/r/madoos/chain-mock
